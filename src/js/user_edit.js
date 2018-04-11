@@ -87,11 +87,6 @@ class UserEdit extends Component {
       '          <div class="input-field col s12">\n' +
       '            <select id="group_select_edit">\n' +
       '              <option value="" disabled selected>Choose group</option>\n' +
-      '              <option value="1">Administrators</option>\n' +
-      '              <option value="2">Merchants</option>\n' +
-      '              <option value="3">Operators</option>\n' +
-      '              <option value="4">Clients</option>\n' +
-      '              <option value="5">Resellers</option>\n' +
       '            </select>\n' +
       '            <label>Group</label>\n' +
       '          </div>\n' +
@@ -128,10 +123,15 @@ class UserEdit extends Component {
     // modal open
     const modal_edit = document.querySelector('#modalEdit');
     const select_group_edit = document.querySelector('#group_select_edit');
+
+    groups.forEach((group) => {
+      select_group_edit.innerHTML += "<option value="+ group.group_id +">" + group.name + "</option>";
+    });
     const instance = M.Modal.init(modal_edit, {});
     M.FormSelect.init(select_group_edit, {});
     M.Range.init(credit_input, {});
     instance.open();
+
     const group_disable = document.querySelector('.select-wrapper').children[0];
     const obj = users.find(user => user.user_id === Number(e.target.parentElement.id));
     // console.log(obj);

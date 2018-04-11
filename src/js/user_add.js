@@ -85,11 +85,6 @@ class UserAdd extends Component {
       '          <div class="input-field col s12">\n' +
       '            <select id="group_select">\n' +
       '              <option value="" disabled selected>Choose group</option>\n' +
-      '              <option value="1">Administrators</option>\n' +
-      '              <option value="2">Merchants</option>\n' +
-      '              <option value="3">Operators</option>\n' +
-      '              <option value="4">Clients</option>\n' +
-      '              <option value="5">Resellers</option>\n' +
       '            </select>\n' +
       '            <label>Group</label>\n' +
       '          </div>\n' +
@@ -116,6 +111,11 @@ class UserAdd extends Component {
     const modal = document.querySelector('#modalAdd');
     const select_group = document.querySelector('#group_select');
     const range = document.querySelector('#range_credit');
+    const groups = JSON.parse(localStorage.getItem('groupList'));
+
+    groups.forEach((group) => {
+      select_group.innerHTML += "<option value="+ group.group_id +">" + group.name + "</option>";
+    });
     const instance = M.Modal.init(modal, {});
     M.FormSelect.init(select_group, {});
     M.Range.init(range, {});
