@@ -1,9 +1,11 @@
 /* eslint-disable camelcase,no-undef,prefer-destructuring */
 import Component from './component';
 
+const editButton = document.querySelector('#tbodyUser');
 class UserEdit extends Component {
   init() {
-    this.on('click', this.editUser.bind(this));
+    editButton.addEventListener('dblclick', this.openEditModal.bind(this));
+    // this.on('click', this.editUser.bind(this));
   }
 
   editUser() {
@@ -43,15 +45,9 @@ class UserEdit extends Component {
     };
     this.emit('editUser', data, document);
   }
-}
-
-const editButton = document.querySelector('#tbodyUser');
-// eslint-disable-next-line no-use-before-define
-editButton.addEventListener('dblclick', openEditModal);
-
-function openEditModal(e) {
-  const modalEdit = document.querySelector('#modalEdit');
-  modalEdit.innerHTML +=
+  openEditModal(e) {
+    const modalEdit = document.querySelector('#modalEdit');
+    modalEdit.innerHTML +=
       '<div class="modal-content">\n' +
       '    <div id="user_edit_id" hidden></div>\n' +
       '    <h4>Edit user info</h4>\n' +
@@ -119,79 +115,83 @@ function openEditModal(e) {
       '    <a class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>\n' +
       '    <a id="EditUser" class="modal-action modal-close waves-effect waves-green btn-flat">Update</a>\n' +
       '  </div>';
-  const updateBtn = document.querySelector('#EditUser');
-  const user_edit_id = document.querySelector('#user_edit_id');
-  const edit_name = document.querySelector('#first_name_edit');
-  const edit_last_name = document.querySelector('#last_name_edit');
-  const edit_street = document.querySelector('#street_edit');
-  const edit_zip_code = document.querySelector('#zip_code_edit');
-  const edit_city = document.querySelector('#city_edit');
-  const edit_phone = document.querySelector('#phone_edit');
-  const credit_input = document.querySelector('#range_credit_edit');
-  const users = JSON.parse(localStorage.getItem('userHash'));
-  const groups = JSON.parse(localStorage.getItem('groupList'));
-  // modal open
-  const modal_edit = document.querySelector('#modalEdit');
-  const select_group_edit = document.querySelector('#group_select_edit');
-  const instance = M.Modal.init(modal_edit, {});
-  M.FormSelect.init(select_group_edit, {});
-  M.Range.init(credit_input, {});
-  instance.open();
-  const group_disable = document.querySelector('.select-wrapper').children[0];
-  // eslint-disable-next-line eqeqeq
-  const obj = users.find(user => e.target.parentElement.id == user.user_id);
-  const splitName = obj.name.split(' '); // split name for 2 values (name is splitName[0] and surname is splitName[1]);
-  // console.log(splitName);
+    const updateBtn = document.querySelector('#EditUser');
+    const user_edit_id = document.querySelector('#user_edit_id');
+    const edit_name = document.querySelector('#first_name_edit');
+    const edit_last_name = document.querySelector('#last_name_edit');
+    const edit_street = document.querySelector('#street_edit');
+    const edit_zip_code = document.querySelector('#zip_code_edit');
+    const edit_city = document.querySelector('#city_edit');
+    const edit_phone = document.querySelector('#phone_edit');
+    const credit_input = document.querySelector('#range_credit_edit');
+    const users = JSON.parse(localStorage.getItem('userHash'));
+    const groups = JSON.parse(localStorage.getItem('groupList'));
+    // modal open
+    const modal_edit = document.querySelector('#modalEdit');
+    const select_group_edit = document.querySelector('#group_select_edit');
+    const instance = M.Modal.init(modal_edit, {});
+    M.FormSelect.init(select_group_edit, {});
+    M.Range.init(credit_input, {});
+    instance.open();
+    const group_disable = document.querySelector('.select-wrapper').children[0];
+    // eslint-disable-next-line eqeqeq
+    const obj = users.find(user => e.target.parentElement.id == user.user_id);
+    const splitName = obj.name.split(' '); // split name for 2 values (name is splitName[0] and surname is splitName[1]);
+    // console.log(splitName);
 
-  edit_name.classList.add('valid');
-  edit_name.nextElementSibling.className = 'active';
+    edit_name.classList.add('valid');
+    edit_name.nextElementSibling.className = 'active';
 
-  edit_last_name.classList.add('valid');
-  edit_last_name.nextElementSibling.className = 'active';
+    edit_last_name.classList.add('valid');
+    edit_last_name.nextElementSibling.className = 'active';
 
-  edit_street.classList.add('valid');
-  edit_street.nextElementSibling.className = 'active';
+    edit_street.classList.add('valid');
+    edit_street.nextElementSibling.className = 'active';
 
-  edit_zip_code.classList.add('valid');
-  edit_zip_code.nextElementSibling.className = 'active';
+    edit_zip_code.classList.add('valid');
+    edit_zip_code.nextElementSibling.className = 'active';
 
-  edit_city.classList.add('valid');
-  edit_city.nextElementSibling.className = 'active';
+    edit_city.classList.add('valid');
+    edit_city.nextElementSibling.className = 'active';
 
-  edit_phone.classList.add('valid');
-  edit_phone.nextElementSibling.className = 'active';
+    edit_phone.classList.add('valid');
+    edit_phone.nextElementSibling.className = 'active';
 
-  user_edit_id.innerText = obj.user_id;
-  edit_name.value = splitName[0];
-  edit_last_name.value = splitName[1];
-  edit_street.value = obj.street;
-  edit_zip_code.value = obj.zip_code;
-  edit_city.value = obj.city;
-  edit_phone.value = obj.phone;
+    user_edit_id.innerText = obj.user_id;
+    edit_name.value = splitName[0];
+    edit_last_name.value = splitName[1];
+    edit_street.value = obj.street;
+    edit_zip_code.value = obj.zip_code;
+    edit_city.value = obj.city;
+    edit_phone.value = obj.phone;
 
-  const admin_check = groups.find(group => group.group_id === obj.group_id);
-  if (admin_check.is_admin) {
-    credit_input.disabled = true;
+    const admin_check = groups.find(group => group.group_id === obj.group_id);
+    if (admin_check.is_admin) {
+      credit_input.disabled = true;
+    }
+    credit_input.value = obj.credits;
+    if (obj.credits === 0) {
+      edit_name.disabled = true;
+      edit_last_name.disabled = true;
+      edit_street.disabled = true;
+      edit_zip_code.disabled = true;
+      edit_city.disabled = true;
+      edit_phone.disabled = true;
+      group_disable.disabled = true;
+      credit_input.disabled = true;
+      updateBtn.setAttribute('disabled', '');
+    }
+
+    const clearOnOverlay = document.querySelector('.modal-overlay');
+    const clearOnButton = document.querySelector('#modalEdit').querySelector('.modal-close');
+    clearOnOverlay.addEventListener('click', this.clearModal);
+    clearOnButton.addEventListener('click', this.clearModal);
+    // UserEdit.bindTo('#EditUser');
+    updateBtn.addEventListener('click', this.editUser.bind(this));
   }
-  credit_input.value = obj.credits;
-  if (obj.credits === 0) {
-    edit_name.disabled = true;
-    edit_last_name.disabled = true;
-    edit_street.disabled = true;
-    edit_zip_code.disabled = true;
-    edit_city.disabled = true;
-    edit_phone.disabled = true;
-    group_disable.disabled = true;
-    credit_input.disabled = true;
-    updateBtn.setAttribute('disabled', '');
-  }
-
-  const clearOnOverlay = document.querySelector('.modal-overlay');
-  const clearOnButton = document.querySelector('#modalEdit').querySelector('.modal-close');
-  function clearModal() {
+  clearModal() {
+    const modalEdit = document.querySelector('#modalEdit');
     modalEdit.innerHTML = null;
   }
-  clearOnOverlay.addEventListener('click', clearModal);
-  clearOnButton.addEventListener('click', clearModal);
-  UserEdit.bindTo('#EditUser');
 }
+export default UserEdit;

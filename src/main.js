@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import UserData from './js/user_data';
 import GroupList from './js/group_list';
 import UserList from './js/user_list';
@@ -10,3 +9,5 @@ UserList.bindTo('#tbodyUser');
 UserStore.bindTo(document);
 UserData.bindTo(document);
 GroupList.bindTo('#filters');
+UserAdd.bindTo(document);
+UserEdit.bindTo(document);

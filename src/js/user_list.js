@@ -4,6 +4,8 @@ import Component from './component';
 class UserList extends Component {
   init() {
     this.on('renderUserList', this.render.bind(this), document);
+    this.on('renderUserList', this.countUsers.bind(this), document);
+    window.addEventListener('hashchange', this.location.bind(this));
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -95,62 +97,54 @@ class UserList extends Component {
       // location hash end;
     });
     table.appendChild(docFragment);
-    countUsers();
+    this.countUsers(users);
   }
-}
+  countUsers(users) {
+    // const users = JSON.parse(localStorage.getItem('userHash'));
+    let admins = 0;
+    let merch = 0;
+    let operators = 0;
+    let clients = 0;
+    let release = 0;
 
-// location hash listener
-window.addEventListener('hashchange', location);
-function location(e) {
-  const users = JSON.parse(localStorage.getItem('userHash'));
-  const groupLength = document.querySelector('#filters');
-  const newRend = new UserList();
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < groupLength.children.length; i++) {
-    groupLength.children[i].className = ''; // clear class active for all group list;
-  }
-  e.currentTarget.document.activeElement.parentElement.className = 'active';
-  // this.emit('renderUserList', users);
-  newRend.render(users);
-  // this.emit('renderUserList', users);
-}
-function countUsers() {
-  const users = JSON.parse(localStorage.getItem('userHash'));
-  let admins = 0;
-  let merch = 0;
-  let operators = 0;
-  let clients = 0;
-  let release = 0;
-
-  const CountMerch = document.querySelector('#merchants');
-  const CountAdmin = document.querySelector('#admins');
-  const CountOperator = document.querySelector('#operators');
-  const CountClient = document.querySelector('#clients');
-  const CountRelease = document.querySelector('#resellers');
-
-  // eslint-disable-next-line consistent-return
-  users.forEach((item) => {
-    try {
-      if (item.group_id === 1) {
-        admins += 1;
-        CountAdmin.innerText = admins;
-      } else if (item.group_id === 2) {
-        merch += 1;
-        CountMerch.innerText = merch;
-      } else if (item.group_id === 3) {
-        operators += 1;
-        CountOperator.innerText = operators;
-      } else if (item.group_id === 4) {
-        clients += 1;
-        CountClient.innerText = clients;
-      } else if (item.group_id === 5) {
-        release += 1;
-        CountRelease.innerText = release;
+    const CountMerch = document.querySelector('#merchants');
+    const CountAdmin = document.querySelector('#admins');
+    const CountOperator = document.querySelector('#operators');
+    const CountClient = document.querySelector('#clients');
+    const CountRelease = document.querySelector('#resellers');
+    users.forEach((item) => {
+      try {
+        if (item.group_id === 1) {
+          admins += 1;
+          CountAdmin.innerText = admins;
+        } else if (item.group_id === 2) {
+          merch += 1;
+          CountMerch.innerText = merch;
+        } else if (item.group_id === 3) {
+          operators += 1;
+          CountOperator.innerText = operators;
+        } else if (item.group_id === 4) {
+          clients += 1;
+          CountClient.innerText = clients;
+        } else if (item.group_id === 5) {
+          release += 1;
+          CountRelease.innerText = release;
+        }
+      } catch (e) {
+        return null;
       }
-    } catch (e) {
-      return null;
+      return item;
+    });
+  }
+  location(e) {
+    const users = JSON.parse(localStorage.getItem('userHash'));
+    const groupLength = document.querySelector('#filters');
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < groupLength.children.length; i++) {
+      groupLength.children[i].className = ''; // clear class active for all group list;
     }
-  });
+    e.currentTarget.document.activeElement.parentElement.className = 'active';
+    this.emit('renderUserList', users, document);
+  }
 }
-
 export default UserList;
