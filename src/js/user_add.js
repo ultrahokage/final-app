@@ -17,8 +17,8 @@ class UserAdd extends Component {
     const phone = document.querySelector('#phone').value;
     const group = document.querySelector('#modalAdd').querySelector('.selected');
     const credit = document.querySelector('#range_credit');
-
     const creditValue = credit.value;
+
     if (group.innerText === 'Administrators') {
       group_id = 1;
     } else if (group.innerText === 'Merchants') {

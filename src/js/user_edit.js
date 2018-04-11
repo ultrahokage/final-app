@@ -170,6 +170,7 @@ class UserEdit extends Component {
       credit_input.disabled = true;
     }
     credit_input.value = obj.credits;
+
     if (obj.credits === 0) {
       edit_name.disabled = true;
       edit_last_name.disabled = true;
