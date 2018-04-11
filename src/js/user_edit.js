@@ -125,7 +125,7 @@ class UserEdit extends Component {
     const select_group_edit = document.querySelector('#group_select_edit');
 
     groups.forEach((group) => {
-      select_group_edit.innerHTML += "<option value="+ group.group_id +">" + group.name + "</option>";
+      select_group_edit.innerHTML += `<option value="${group.group_id}">${group.name}</option>`;
     });
     const instance = M.Modal.init(modal_edit, {});
     M.FormSelect.init(select_group_edit, {});

@@ -114,7 +114,7 @@ class UserAdd extends Component {
     const groups = JSON.parse(localStorage.getItem('groupList'));
 
     groups.forEach((group) => {
-      select_group.innerHTML += "<option value="+ group.group_id +">" + group.name + "</option>";
+      select_group.innerHTML += `<option value="${group.group_id}">${group.name}</option>`;
     });
     const instance = M.Modal.init(modal, {});
     M.FormSelect.init(select_group, {});
