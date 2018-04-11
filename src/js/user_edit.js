@@ -1,13 +1,12 @@
-/* eslint-disable camelcase,no-undef,prefer-destructuring */
+/* eslint-disable camelcase,prefer-destructuring */
 import Component from './component';
 
 const editButton = document.querySelector('#tbodyUser');
+
 class UserEdit extends Component {
   init() {
     editButton.addEventListener('dblclick', this.openEditModal.bind(this));
-    // this.on('click', this.editUser.bind(this));
   }
-
   editUser() {
     let group_id = 0;
     const user_id = document.querySelector('#user_edit_id');
@@ -18,7 +17,6 @@ class UserEdit extends Component {
     const edit_city = document.querySelector('#city_edit').value;
     const edit_phone = document.querySelector('#phone_edit').value;
     const credit_input = document.querySelector('#range_credit_edit').value;
-
     const group = document.querySelector('.selected');
 
     if (group.innerText === 'Administrators') {
@@ -115,6 +113,7 @@ class UserEdit extends Component {
       '    <a class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>\n' +
       '    <a id="EditUser" class="modal-action modal-close waves-effect waves-green btn-flat">Update</a>\n' +
       '  </div>';
+
     const updateBtn = document.querySelector('#EditUser');
     const user_edit_id = document.querySelector('#user_edit_id');
     const edit_name = document.querySelector('#first_name_edit');
@@ -134,8 +133,8 @@ class UserEdit extends Component {
     M.Range.init(credit_input, {});
     instance.open();
     const group_disable = document.querySelector('.select-wrapper').children[0];
-    // eslint-disable-next-line eqeqeq
-    const obj = users.find(user => e.target.parentElement.id == user.user_id);
+    const obj = users.find(user => user.user_id === Number(e.target.parentElement.id));
+    // console.log(obj);
     const splitName = obj.name.split(' '); // split name for 2 values (name is splitName[0] and surname is splitName[1]);
     // console.log(splitName);
 
@@ -166,6 +165,7 @@ class UserEdit extends Component {
     edit_phone.value = obj.phone;
 
     const admin_check = groups.find(group => group.group_id === obj.group_id);
+    // console.log(admin_check);
     if (admin_check.is_admin) {
       credit_input.disabled = true;
     }
@@ -181,17 +181,18 @@ class UserEdit extends Component {
       credit_input.disabled = true;
       updateBtn.setAttribute('disabled', '');
     }
-
     const clearOnOverlay = document.querySelector('.modal-overlay');
     const clearOnButton = document.querySelector('#modalEdit').querySelector('.modal-close');
-    clearOnOverlay.addEventListener('click', this.clearModal);
-    clearOnButton.addEventListener('click', this.clearModal);
-    // UserEdit.bindTo('#EditUser');
+
+    clearOnOverlay.addEventListener('click', this.clearModal.bind(this));
+    clearOnButton.addEventListener('click', this.clearModal.bind(this));
     updateBtn.addEventListener('click', this.editUser.bind(this));
   }
+  // eslint-disable-next-line class-methods-use-this
   clearModal() {
     const modalEdit = document.querySelector('#modalEdit');
     modalEdit.innerHTML = null;
   }
 }
+
 export default UserEdit;

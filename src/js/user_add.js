@@ -1,4 +1,4 @@
-/* eslint-disable camelcase,no-undef,no-use-before-define */
+/* eslint-disable camelcase,class-methods-use-this */
 import Component from './component';
 
 const addButton = document.querySelector('#btn-add-user');
@@ -16,11 +16,9 @@ class UserAdd extends Component {
     const city = document.querySelector('#city').value;
     const phone = document.querySelector('#phone').value;
     const group = document.querySelector('#modalAdd').querySelector('.selected');
-    // const groupText = group.innerText;
-    // console.log(groupText);
     const credit = document.querySelector('#range_credit');
-    const creditValue = credit.value;
 
+    const creditValue = credit.value;
     if (group.innerText === 'Administrators') {
       group_id = 1;
     } else if (group.innerText === 'Merchants') {
@@ -122,12 +120,14 @@ class UserAdd extends Component {
     M.FormSelect.init(select_group, {});
     M.Range.init(range, {});
     instance.open();
+
     const modalClick = document.querySelector('.modal-content');
-    modalClick.addEventListener('click', this.checkValid);
     const clearOnOverlay = document.querySelector('.modal-overlay');
     const clearOnButton = document.querySelector('#modalAdd').querySelector('.modal-close');
-    clearOnOverlay.addEventListener('click', this.clearModal);
-    clearOnButton.addEventListener('click', this.clearModal);
+
+    modalClick.addEventListener('click', this.checkValid.bind(this));
+    clearOnOverlay.addEventListener('click', this.clearModal.bind(this));
+    clearOnButton.addEventListener('click', this.clearModal.bind(this));
     createBtn.addEventListener('click', this.addUser.bind(this));
   }
   checkValid() {
@@ -135,8 +135,7 @@ class UserAdd extends Component {
     const createButton = document.querySelector('#createUser');
     const getInvalid = modalClick.getElementsByClassName('invalid');
     if (getInvalid.length >= 1) {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < getInvalid.length; i++) {
+      for (let i = 0; i < getInvalid.length; i += 1) {
         if (getInvalid[i].classList.contains('invalid')) {
           createButton.setAttribute('disabled', 'true');
         }
@@ -150,4 +149,5 @@ class UserAdd extends Component {
     modalAdd.innerHTML = null;
   }
 }
+
 export default UserAdd;

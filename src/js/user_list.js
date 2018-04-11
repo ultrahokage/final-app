@@ -1,24 +1,21 @@
-/* eslint-disable camelcase,prefer-destructuring,no-use-before-define,no-param-reassign,eqeqeq */
+/* eslint-disable camelcase,class-methods-use-this */
 import Component from './component';
 
 class UserList extends Component {
   init() {
     this.on('renderUserList', this.render.bind(this), document);
-    this.on('renderUserList', this.countUsers.bind(this), document);
+    this.on('count', this.countUsers.bind(this), document);
     window.addEventListener('hashchange', this.location.bind(this));
   }
-
-  // eslint-disable-next-line class-methods-use-this
   render(users) {
     // console.log(users);
     const table = document.querySelector('.striped');
     const list = document.querySelector('#tbodyUser');
-    list.innerHTML = '';
-
+    const page_title = document.querySelector('.page-title');
     const docFragment = document.createDocumentFragment();
     const locationHash = document.location.hash;
-    const page_title = document.querySelector('.page-title');
 
+    list.innerHTML = '';
     users.forEach((user) => {
       const trItem = document.createElement('tr');
       const name = document.createElement('td');
@@ -100,7 +97,6 @@ class UserList extends Component {
     this.countUsers(users);
   }
   countUsers(users) {
-    // const users = JSON.parse(localStorage.getItem('userHash'));
     let admins = 0;
     let merch = 0;
     let operators = 0;
@@ -112,6 +108,7 @@ class UserList extends Component {
     const CountOperator = document.querySelector('#operators');
     const CountClient = document.querySelector('#clients');
     const CountRelease = document.querySelector('#resellers');
+
     users.forEach((item) => {
       try {
         if (item.group_id === 1) {
@@ -139,12 +136,12 @@ class UserList extends Component {
   location(e) {
     const users = JSON.parse(localStorage.getItem('userHash'));
     const groupLength = document.querySelector('#filters');
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < groupLength.children.length; i++) {
+    for (let i = 0; i < groupLength.children.length; i += 1) {
       groupLength.children[i].className = ''; // clear class active for all group list;
     }
     e.currentTarget.document.activeElement.parentElement.className = 'active';
     this.emit('renderUserList', users, document);
   }
 }
+
 export default UserList;
