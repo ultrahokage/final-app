@@ -20,27 +20,10 @@ class GroupList extends Component {
       span.setAttribute('data-badge-caption', ' ');
       span.className = 'badge';
 
-      if (group.group_id === 1) {
-        aGroup.innerText = group.name;
-        span.id = 'admins';
-        aGroup.href = '#/admins';
-      } else if (group.group_id === 2) {
-        aGroup.innerText = group.name;
-        span.id = 'merchants';
-        aGroup.href = '#/merchants';
-      } else if (group.group_id === 3) {
-        aGroup.innerText = group.name;
-        span.id = 'operators';
-        aGroup.href = '#/operators';
-      } else if (group.group_id === 4) {
-        aGroup.innerText = group.name;
-        span.id = 'clients';
-        aGroup.href = '#/clients';
-      } else if (group.group_id === 5) {
-        aGroup.innerText = group.name;
-        span.id = 'resellers';
-        aGroup.href = '#/resellers';
-      }
+      aGroup.innerText = group.name;
+      span.id = group.name;
+      aGroup.href = `#/${group.group_id}`;
+
       aGroup.appendChild(span);
       listGroup.appendChild(aGroup);
       ulGroup.appendChild(listGroup);

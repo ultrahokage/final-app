@@ -14,6 +14,7 @@ class UserList extends Component {
     const page_title = document.querySelector('.page-title');
     const docFragment = document.createDocumentFragment();
     const locationHash = document.location.hash;
+    const groups = JSON.parse(localStorage.getItem('groupList'));
 
     list.innerHTML = '';
     users.forEach((user) => {
@@ -24,6 +25,7 @@ class UserList extends Component {
       const city = document.createElement('td');
       const phone = document.createElement('td');
       const credit = document.createElement('td');
+
       trItem.id = user.user_id;
       name.innerText = user.name;
       street.innerText = user.street;
@@ -32,62 +34,21 @@ class UserList extends Component {
       phone.innerText = user.phone;
       credit.innerText = user.credits;
       // location hash;
-      if (locationHash === '#/admins') {
-        page_title.innerText = 'Administrators';
-        if (user.group_id === 1) {
-          trItem.appendChild(name);
-          trItem.appendChild(street);
-          trItem.appendChild(zip_code);
-          trItem.appendChild(city);
-          trItem.appendChild(phone);
-          trItem.appendChild(credit);
-          list.appendChild(trItem);
+      const find_id = groups.find(item => item.group_id === Number(locationHash.replace(/^\D+/g, '')));
+      try {
+        if (Number(locationHash.replace(/^\D+/g, '')) === find_id.group_id) {
+          page_title.innerText = find_id.name;
+          if (user.group_id === find_id.group_id) {
+            trItem.appendChild(name);
+            trItem.appendChild(street);
+            trItem.appendChild(zip_code);
+            trItem.appendChild(city);
+            trItem.appendChild(phone);
+            trItem.appendChild(credit);
+            list.appendChild(trItem);
+          }
         }
-      } else if (locationHash === '#/merchants') {
-        page_title.innerText = 'Merchants';
-        if (user.group_id === 2) {
-          trItem.appendChild(name);
-          trItem.appendChild(street);
-          trItem.appendChild(zip_code);
-          trItem.appendChild(city);
-          trItem.appendChild(phone);
-          trItem.appendChild(credit);
-          list.appendChild(trItem);
-        }
-      } else if (locationHash === '#/operators') {
-        page_title.innerText = 'Operators';
-        if (user.group_id === 3) {
-          trItem.appendChild(name);
-          trItem.appendChild(street);
-          trItem.appendChild(zip_code);
-          trItem.appendChild(city);
-          trItem.appendChild(phone);
-          trItem.appendChild(credit);
-          list.appendChild(trItem);
-        }
-      } else if (locationHash === '#/clients') {
-        page_title.innerText = 'Clients';
-        if (user.group_id === 4) {
-          trItem.appendChild(name);
-          trItem.appendChild(street);
-          trItem.appendChild(zip_code);
-          trItem.appendChild(city);
-          trItem.appendChild(phone);
-          trItem.appendChild(credit);
-          list.appendChild(trItem);
-        }
-      } else if (locationHash === '#/resellers') {
-        page_title.innerText = 'Resellers';
-        if (user.group_id === 5) {
-          trItem.appendChild(name);
-          trItem.appendChild(street);
-          trItem.appendChild(zip_code);
-          trItem.appendChild(city);
-          trItem.appendChild(phone);
-          trItem.appendChild(credit);
-          list.appendChild(trItem);
-        }
-      } else {
+      } catch (e) {
         page_title.innerText = 'Select group, please!';
         list.innerHTML = '';
       }
@@ -103,11 +64,11 @@ class UserList extends Component {
     let clients = 0;
     let release = 0;
 
-    const CountMerch = document.querySelector('#merchants');
-    const CountAdmin = document.querySelector('#admins');
-    const CountOperator = document.querySelector('#operators');
-    const CountClient = document.querySelector('#clients');
-    const CountRelease = document.querySelector('#resellers');
+    const CountMerch = document.querySelector('#Merchants');
+    const CountAdmin = document.querySelector('#Administrators');
+    const CountOperator = document.querySelector('#Operators');
+    const CountClient = document.querySelector('#Clients');
+    const CountRelease = document.querySelector('#Resellers');
 
     users.forEach((item) => {
       try {
