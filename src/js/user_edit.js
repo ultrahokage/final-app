@@ -8,7 +8,6 @@ class UserEdit extends Component {
     editButton.addEventListener('dblclick', this.openEditModal.bind(this));
   }
   editUser() {
-    let group_id = 0;
     const user_id = document.querySelector('#user_edit_id');
     const edit_name = document.querySelector('#first_name_edit').value;
     const edit_last_name = document.querySelector('#last_name_edit').value;
@@ -18,18 +17,9 @@ class UserEdit extends Component {
     const edit_phone = document.querySelector('#phone_edit').value;
     const credit_input = document.querySelector('#range_credit_edit').value;
     const group = document.querySelector('.selected');
-
-    if (group.innerText === 'Administrators') {
-      group_id = 1;
-    } else if (group.innerText === 'Merchants') {
-      group_id = 2;
-    } else if (group.innerText === 'Operators') {
-      group_id = 3;
-    } else if (group.innerText === 'Clients') {
-      group_id = 4;
-    } else if (group.innerText === 'Resellers') {
-      group_id = 5;
-    }
+    const groupList = JSON.parse(localStorage.getItem('groupList'));
+    const find_group = groupList.find(item => item.name === group.innerText);
+    const group_id = find_group.group_id;
 
     const data = {
       user_id: user_id.innerText,

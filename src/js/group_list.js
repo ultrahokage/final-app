@@ -22,7 +22,7 @@ class GroupList extends Component {
 
       aGroup.innerText = group.name;
       span.id = group.name;
-      aGroup.href = `#/${group.group_id}`;
+      aGroup.href = `#/${group.name}`;
 
       aGroup.appendChild(span);
       listGroup.appendChild(aGroup);

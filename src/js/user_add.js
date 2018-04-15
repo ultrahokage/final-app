@@ -1,4 +1,4 @@
-/* eslint-disable camelcase,class-methods-use-this */
+/* eslint-disable camelcase,class-methods-use-this,prefer-destructuring */
 import Component from './component';
 
 const addButton = document.querySelector('#btn-add-user');
@@ -8,7 +8,6 @@ class UserAdd extends Component {
     addButton.addEventListener('click', this.openAddModal.bind(this));
   }
   addUser() {
-    let group_id = 0;
     const first_name = document.querySelector('#first_name').value;
     const last_name = document.querySelector('#last_name').value;
     const street = document.querySelector('#street').value;
@@ -18,18 +17,9 @@ class UserAdd extends Component {
     const group = document.querySelector('#modalAdd').querySelector('.selected');
     const credit = document.querySelector('#range_credit');
     const creditValue = credit.value;
-
-    if (group.innerText === 'Administrators') {
-      group_id = 1;
-    } else if (group.innerText === 'Merchants') {
-      group_id = 2;
-    } else if (group.innerText === 'Operators') {
-      group_id = 3;
-    } else if (group.innerText === 'Clients') {
-      group_id = 4;
-    } else if (group.innerText === 'Resellers') {
-      group_id = 5;
-    }
+    const groupList = JSON.parse(localStorage.getItem('groupList'));
+    const find_group = groupList.find(item => item.name === group.innerText);
+    const group_id = find_group.group_id;
 
     const data = {
       group_id,

@@ -34,9 +34,11 @@ class UserList extends Component {
       phone.innerText = user.phone;
       credit.innerText = user.credits;
       // location hash;
-      const find_id = groups.find(item => item.group_id === Number(locationHash.replace(/^\D+/g, '')));
+      const ourLocation = locationHash.slice(2);
+      const find_id = groups.find(item => item.name === ourLocation);
+      // console.log(find_id);
       try {
-        if (Number(locationHash.replace(/^\D+/g, '')) === find_id.group_id) {
+        if (ourLocation === find_id.name) {
           page_title.innerText = find_id.name;
           if (user.group_id === find_id.group_id) {
             trItem.appendChild(name);
@@ -71,23 +73,23 @@ class UserList extends Component {
     const CountRelease = document.querySelector('#Resellers');
 
     users.forEach((item) => {
+      if (item.group_id === 1) {
+        admins += 1;
+      } else if (item.group_id === 2) {
+        merch += 1;
+      } else if (item.group_id === 3) {
+        operators += 1;
+      } else if (item.group_id === 4) {
+        clients += 1;
+      } else if (item.group_id === 5) {
+        release += 1;
+      }
       try {
-        if (item.group_id === 1) {
-          admins += 1;
-          CountAdmin.innerText = admins;
-        } else if (item.group_id === 2) {
-          merch += 1;
-          CountMerch.innerText = merch;
-        } else if (item.group_id === 3) {
-          operators += 1;
-          CountOperator.innerText = operators;
-        } else if (item.group_id === 4) {
-          clients += 1;
-          CountClient.innerText = clients;
-        } else if (item.group_id === 5) {
-          release += 1;
-          CountRelease.innerText = release;
-        }
+        CountAdmin.innerText = admins;
+        CountMerch.innerText = merch;
+        CountOperator.innerText = operators;
+        CountClient.innerText = clients;
+        CountRelease.innerText = release;
       } catch (e) {
         return null;
       }
